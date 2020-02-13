@@ -9,7 +9,7 @@
         <property name="Password" value="Eldy12"/>
         <property name="URL" value="jdbc:mysql://localhost:3307/simple_store_db?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="useSSL" value="false"
+        <property name="useSSL" value="false"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/simple_store_db" object-type="user" pool-name="mysql_simple_store_db_rootPool"/>
 </resources>
