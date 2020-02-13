@@ -96,7 +96,7 @@ private static final String PERSISTENCE_UNIT_NAME = "jsf_tutorialPU";
     
         try {
             User u = (User) this.stmt.getSingleResult();
-            if (u != null && (username.equalsIgnoreCase(u.getUsername())) && (pwd.equalsIgnoreCase(u.getPwd()))) {
+            if (u != null && (username.equalsIgnoreCase(u.getUsername()) && (pwd.equalsIgnoreCase(u.getPwd())))) {
                 this.username = u.getUsername();
                 return "/home/index.xhtml?faces-redirect=true";
             }
