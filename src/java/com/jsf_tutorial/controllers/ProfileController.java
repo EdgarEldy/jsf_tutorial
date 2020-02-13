@@ -5,9 +5,13 @@
  */
 package com.jsf_tutorial.controllers;
 
+import com.jsf_tutorial.JPAImpl.ProfileFacadeLocal;
+import com.jsf_tutorial.models.Profile;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
+import javax.ejb.EJB;
 
 /**
  *
@@ -15,12 +19,52 @@ import java.io.Serializable;
  */
 @Named(value = "profileController")
 @SessionScoped
-public class profileController implements Serializable {
-
+public class ProfileController implements Serializable {
+@EJB
+    private ProfileFacadeLocal profileFacade;
+    private Profile profile = new Profile();
     /**
-     * Creates a new instance of profileController
+     * Creates a new instance of ProfilController
      */
-    public profileController() {
+    public ProfileController() {
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+    public String add()
+    {
+        profileFacade.create(profile);
+        profile = new Profile();
+    return "/profiles/index.xhtml?faces-redirect=true";
+    }
+    
+    public List<Profile> show()
+    {
+    return profileFacade.findAll();
+    }
+    
+    public String edit(int id)
+    {
+        profile = profileFacade.find(id);
+    return "/profiles/edit.xhtml?faces-redirect=true";
+    }
+    
+    public String update()
+    {
+    profileFacade.edit(profile);
+    profile = new Profile();
+    return "/profiles/index.xhtml?faces-redirect=true";
+    }
+    
+    public void delete(int id)
+    {
+    profile = profileFacade.find(id);
+    profileFacade.remove(profile);
     }
     
 }
