@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"                
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="./../templates/default.xhtml">
+
+    <ui:define name="content">
+        <div class="row">
+    			<div class="col-lg-12">
+    				<h1 class="page-header">Home</h1>
+    			</div>
+                        </div><!--/.row-->
+			<div class="col-xs-12 col-md-6 col-lg-3">
+                            <a href="${facesContext.externalContext.requestContextPath}/orders/index.xhtml">
+				<div class="panel panel-orange panel-widget">
+					<div class="row no-padding">
+						<div class="col-sm-3 col-lg-5 widget-left">
+							<svg class="glyph table"></svg>
+						</div>
+						<div class="col-sm-9 col-lg-7 widget-right">
+							<div class="text-muted">Orders</div>
+						</div>
+					</div>
+				</div>
+					</a>
+			</div>
+			<div class="col-xs-12 col-md-6 col-lg-3">
+				<a href="${facesContext.externalContext.requestContextPath}/customers/index.xhtml">
+				<div class="panel panel-teal panel-widget">
+					<div class="row no-padding">
+						<div class="col-sm-3 col-lg-5 widget-left">
+							<svg class="glyph stroked calendar"></svg>
+						</div>
+						<div class="col-sm-9 col-lg-7 widget-right">
+							<div class="text-muted">Customers</div>
+						</div>
+					</div>
+				</div>
+				</a>
+			</div>
+			<div class="col-xs-12 col-md-6 col-lg-3">
+				<a href="${facesContext.externalContext.requestContextPath}/products/index.xhtml">
+				<div class="panel panel-blue panel-widget ">
+					<div class="row no-padding">
+						<div class="col-sm-3 col-lg-5 widget-left">
+							<svg class="glyph stroked clock"></svg>
+						</div>
+						<div class="col-sm-9 col-lg-7 widget-right">
+							<div class="text-muted">Products</div>
+						</div>
+					</div>
+				</div>
+				</a>
+			</div>
+			<div class="col-xs-12 col-md-6 col-lg-3">
+				<a href="${facesContext.externalContext.requestContextPath}/users/profile.xhtml">
+					<div class="panel panel-red panel-widget">
+					<div class="row no-padding">
+						<div class="col-sm-3 col-lg-5 widget-left">
+							<svg class="glyph stroked male user"></svg>
+						</div>
+						<div class="col-sm-9 col-lg-7 widget-right">
+							<div class="text-muted">Profile</div>
+						</div>
+					</div>
+				</div>
+				</a>
+			</div>
+    </ui:define>
+
+</ui:composition>
