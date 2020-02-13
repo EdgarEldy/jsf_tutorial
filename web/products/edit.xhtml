@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../templates/default.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <f:view>
+            <h:form role="form">
+                <h:panelGrid columns="2">
+                <div class="form-group">
+                    <h:outputLabel value="DesignationPduit:" for="designationPduit" />
+                    <h:inputText id="designationPduit" value="#{produitController.pduit.designationPduit}" 
+                                 title="DesignationPduit" />
+                </div>
+                    <div class="form-group">
+                       <h:outputLabel value="PuPduit:" for="puPduit" />
+                    <h:inputText id="puPduit" value="#{produitController.pduit.puPduit}" title="PuPduit" /> 
+                    </div>
+                </h:panelGrid>
+                <h:commandButton value="Modifier" class="btn btn-primary" action="#{produitController.update()}"/>
+                <h:commandButton value="Annuler" class="reset" />
+            </h:form>
+        </f:view>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"                
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="./../templates/default.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                    <div class="panel-heading">Gestion des shifts</div>
+                    <div class="panel-body">
+                        <a href="${facesContext.externalContext.requestContextPath}/clients/add.xhtml" 
+                            class="btn btn-primary">Nouveau</a>
+
+                                <f:view>
+                                    <h:form>
+                                        <h1><h:outputText value="Clients"/></h1>
+                                        <h:dataTable class="table table-striped table-bordered" value="#{clientController.lister()}" var="item">
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Id"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.idClient}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Nom"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.nomClient}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Prénom"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.prenomClient}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Telephone"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.telClient}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Adresse"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.adresseClient}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Option"/>
+                                                </f:facet>
+                                                    <h:commandLink value="Edit" class="btn btn-primary" 
+                                                               action="#{clientController.edit(item.idClient)}"/>
+                                                <h:commandLink value="Supprimer" class="btn btn-danger" action="#{clientController.delete(item.idClient)}"></h:commandLink>
+                                            </h:column>
+                                        </h:dataTable>
+                                    </h:form>
+                                </f:view>
+                    </div>
+            </div>
+			</div>
+    </ui:define>
+
+</ui:composition>

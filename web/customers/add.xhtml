@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../templates/default.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Heure de shift</div>
+					<div class="panel-body">
+						<div class="col-md-6">
+                                                    <f:view>
+                                                        <h:form role="form">
+                                                            <h:panelGrid columns="2">
+                                                                <h:outputLabel value="NomClient:" for="nomClient" />
+                                                                <h:inputText id="nomClient" class="form-control" value="#{clientController.client.nomClient}" title="NomClient" />
+                                                                <h:outputLabel value="PrenomClient:" for="prenomClient" />
+                                                                <h:inputText id="prenomClient" class="form-control" value="#{clientController.client.prenomClient}" title="PrenomClient" />
+                                                                <h:outputLabel value="TelClient:" for="telClient" />
+                                                                <h:inputText id="telClient" class="form-control" value="#{clientController.client.telClient}" title="TelClient" />
+                                                                <h:outputLabel value="AdresseClient:" for="adresseClient" />
+                                                                <h:inputText id="adresseClient" class="form-control" value="#{clientController.client.adresseClient}" title="AdresseClient" />
+                                                                <h:commandButton class="btn btn-primary" value="Enregister" action="#{clientController.add()}"/>
+                                                            </h:panelGrid>
+                                                        </h:form>
+                                                    </f:view>
+
+
+                                                </div>
+					</div>
+				</div>
+			</div><!-- /.col-->
+
+    </ui:define>
+
+</ui:composition>
