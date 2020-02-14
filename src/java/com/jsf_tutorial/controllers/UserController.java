@@ -28,7 +28,7 @@ import javax.persistence.Query;
 public class UserController implements Serializable {
 
     @EJB
-    private UserFacadeLocal userFacade;
+private UserFacadeLocal userFacade;
 private User user = new User();
 private Profile profile = new Profile();
 EntityManager em;
@@ -87,15 +87,16 @@ private static final String PERSISTENCE_UNIT_NAME = "jsf_tutorialPU";
     return this.userFacade.findAll();
     }
     
-    public String Login()
+    public String login()
     {
     this.em = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME).createEntityManager();
-    this.stmt = this.em.createNamedQuery("User.login", User.class);
+    this.stmt = this.em.createNamedQuery("User.auth",User.class);
     this.stmt.setParameter("username", this.username);
     this.stmt.setParameter("pwd", this.pwd);
     
         try {
-            User u = (User) this.stmt.getSingleResult();
+            User u;
+        u = (User) this.stmt.getSingleResult();
             if (u != null && (username.equalsIgnoreCase(u.getUsername()) && (pwd.equalsIgnoreCase(u.getPwd())))) {
                 this.username = u.getUsername();
                 return "/home/index.xhtml?faces-redirect=true";
