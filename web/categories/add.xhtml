@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../templates/default.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Categories</div>
+					<div class="panel-body">
+						<div class="col-md-6">
+                                                    <f:view>
+                                                        <h:form>
+                                                            <h:panelGrid columns="2">
+                                                                <h:outputLabel value="CatId:" for="catId" />
+                                                                <h:inputText class="form-control" id="catId" value="#{productController.category.catId}" title="CatId" required="true" requiredMessage="The CatId field is required."/>
+                                                                <h:outputLabel value="CatName:" for="catName" />
+                                                                <h:inputText class="form-control" id="catName" value="#{productController.category.catName}" title="CatName" />
+                                                                <h:commandButton type="submit" class="btn btn-primary" value="Save" action="#{categoryController.add()}"/>                                                                
+                                                                <h:commandButton type="reset" class="btn btn-default" value="Reset"/>
+
+                                                            </h:panelGrid>
+                                                        </h:form>
+                                                    </f:view>
+
+
+                                                </div>
+					</div>
+				</div>
+			</div><!-- /.col-->
+
+    </ui:define>
+
+</ui:composition>
