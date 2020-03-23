@@ -42,7 +42,7 @@ private Customer customer = new Customer();
     {
     this.customerFacade.create(customer);
     this.customer = new Customer();
-    return "/home/index.xhtml?faces-redirect=true";
+    return "/customers/index.xhtml?faces-redirect=true";
     }
     
     public List<Customer> show()
@@ -52,7 +52,7 @@ private Customer customer = new Customer();
     
     public String edit(int id)
     {
-    this.customerFacade.find(id);
+    this.customer = this.customerFacade.find(id);
      return "/customers/edit.xhtml?faces-redirect=true";
     }
     
@@ -60,7 +60,7 @@ private Customer customer = new Customer();
     {
     this.customerFacade.edit(customer);
     this.customer = new Customer();    
-    return "/home/index.xhtml?faces-redirect=true";
+    return "/customers/index.xhtml?faces-redirect=true";
     }
     
     public void delete(int id)
