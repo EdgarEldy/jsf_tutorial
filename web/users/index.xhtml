@@ -14,11 +14,9 @@
                         <a href="${facesContext.externalContext.requestContextPath}/users/register.xhtml" 
                             class="btn btn-primary">Nouveau</a>
                             <f:view>
-
-
                                 <h:form>
                                     <h1><h:outputText value="Utilisateurs"/></h1>
-                                    <h:dataTable class="table table-striped table-bordered" value="#{userController.showUsers()}" var="item">
+                                    <h:dataTable class="table table-striped table-bordered" value="#{userController.show()}" var="item">
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="IdUser"/>
@@ -29,7 +27,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="Profil"/>
                                             </f:facet>
-                                            <h:outputText value="#{item.profil.nomProfil}"/>
+                                            <h:outputText value="#{item.fkProfileId.profileName}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
@@ -55,8 +53,8 @@
                                             <f:facet name="header">
                                                 <h:outputText value="Option"></h:outputText>
                                             </f:facet>
-                                            <h:commandLink value="Voir" class="btn btn-default" action="#{userController.showProfile(item.idUser)}"></h:commandLink>
-                                            <h:commandLink value="Desactiver" class="btn btn-danger" onclick="return confirm('Etes-vous sur de vouloir')" action="#{userController.delete(item.idUser)}"></h:commandLink>
+                                            <h:commandLink value="Edit" class="btn btn-default" action="#{userController.showProfile(item.idUser)}"></h:commandLink>
+                                            <h:commandLink value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete thi user ?')" action="#{userController.delete(item.idUser)}"></h:commandLink>
                                         </h:column>
                                     </h:dataTable>
                                 </h:form>
