@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -48,7 +49,8 @@ public class Product implements Serializable {
     private String productName;
     @Column(name = "unit_price")
     private Integer unitPrice;
-    @JoinColumn(name = "fk_cat_id", referencedColumnName = "cat_id")
+    @JoinColumns(
+        @JoinColumn(name = "fk_cat_id", referencedColumnName = "cat_id"))
     @ManyToOne
     private Category fkCatId;
     @OneToMany(mappedBy = "fkProductId")
