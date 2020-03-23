@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../templates/default.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Heure de shift</div>
+					<div class="panel-body">
+						<div class="col-md-6">
+                                                    <f:view>
+
+
+                                                        <h:form>
+                                                            <h1><h:outputText value="Create/Edit"/></h1>
+                                                            <h:panelGrid columns="2">
+                                                                <h:outputLabel value="OrderId:" for="orderId" />
+                                                                <h:inputText id="orderId" value="#{orderController.orders.orderId}" title="OrderId" required="true" requiredMessage="The OrderId field is required."/>
+                                                                <h:outputLabel value="Qty:" for="qty" />
+                                                                <h:inputText id="qty" value="#{orderController.orders.qty}" title="Qty" />
+                                                                <h:outputLabel value="Total:" for="total" />
+                                                                <h:inputText id="total" value="#{orderController.orders.total}" title="Total" />
+                                                                <h:outputLabel value="FkCustomerId:" for="fkCustomerId" />
+                                                                <h:selectOneMenu id="fkCustomerId" value="#{orderController.orders.fkCustomerId}" title="FkCustomerId" >
+                                                                    <!-- TODO: update below reference to list of available items-->
+                                                                    <f:selectItems value="#{fixme}"/>
+                                                                </h:selectOneMenu>
+                                                                <h:outputLabel value="FkProductId:" for="fkProductId" />
+                                                                <h:selectOneMenu id="fkProductId" value="#{orderController.orders.fkProductId}" title="FkProductId" >
+                                                                    <!-- TODO: update below reference to list of available items-->
+                                                                    <f:selectItems value="#{fixme}"/>
+                                                                </h:selectOneMenu>
+                                                            </h:panelGrid>
+                                                        </h:form>
+                                                    </f:view>
+
+
+                                                </div>
+					</div>
+				</div>
+			</div><!-- /.col-->
+
+    </ui:define>
+
+</ui:composition>
