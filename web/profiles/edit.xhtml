@@ -9,15 +9,16 @@
     <ui:define name="content">
         <f:view>
             <h:form>
+                <h1><h:outputText value="Create/Edit"/></h1>
                 <h:panelGrid columns="2">
-                    <div class="form-group">
-                    <h:outputLabel value="NomProfil:" for="nomProfil" />
-                    <h:inputText class="form-control" id="nomProfil" value="#{profilController.profil.nomProfil}" title="NomProfil" />
-                    </div>
+                    <h:outputLabel value="ProfileId:" for="profileId" />
+                    <h:inputText id="profileId" value="#{profileController.profile.profileId}" title="ProfileId" required="true" requiredMessage="The ProfileId field is required."/>
+                    <h:outputLabel value="ProfileName:" for="profileName" />
+                    <h:inputText id="profileName" value="#{profileController.profile.profileName}" title="ProfileName" />
                 </h:panelGrid>
-                <h:commandLink value="Modifier" class="btn btn-primary" action="#{profilController.update()}"/>
             </h:form>
         </f:view>
+
     </ui:define>
 
 </ui:composition>
