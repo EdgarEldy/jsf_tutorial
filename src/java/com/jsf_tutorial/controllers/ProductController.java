@@ -5,6 +5,7 @@
  */
 package com.jsf_tutorial.controllers;
 
+import com.jsf_tutorial.JPAImpl.CategoryFacadeLocal;
 import com.jsf_tutorial.JPAImpl.ProductFacadeLocal;
 import com.jsf_tutorial.models.Category;
 import com.jsf_tutorial.models.Product;
@@ -21,6 +22,9 @@ import javax.ejb.EJB;
 @Named(value = "productController")
 @SessionScoped
 public class ProductController implements Serializable {
+
+    @EJB
+    private CategoryFacadeLocal categoryFacade;
 
     @EJB
     private ProductFacadeLocal productFacade;
@@ -47,6 +51,11 @@ private Category category = new Category();
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+    
+    public List<Category> showCategories()
+    {
+    return this.categoryFacade.findAll();
     }
     
     public String add()
