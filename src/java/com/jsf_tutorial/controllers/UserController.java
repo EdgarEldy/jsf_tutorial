@@ -5,6 +5,7 @@
  */
 package com.jsf_tutorial.controllers;
 
+import com.jsf_tutorial.JPAImpl.ProfileFacadeLocal;
 import com.jsf_tutorial.JPAImpl.UserFacadeLocal;
 import com.jsf_tutorial.models.Profile;
 import com.jsf_tutorial.models.User;
@@ -26,6 +27,9 @@ import javax.persistence.Query;
 @Named(value = "userController")
 @SessionScoped
 public class UserController implements Serializable {
+
+    @EJB
+    private ProfileFacadeLocal profileFacade;
 
     @EJB
 private UserFacadeLocal userFacade;
@@ -75,6 +79,11 @@ private static final String PERSISTENCE_UNIT_NAME = "jsf_tutorialPU";
         this.profile = profile;
     }
     
+    public List<Profile> showProfiles()
+    {
+    return this.profileFacade.findAll();
+    }
+    
     public String add()
     {
     this.userFacade.create(user);
@@ -90,7 +99,7 @@ private static final String PERSISTENCE_UNIT_NAME = "jsf_tutorialPU";
     public String login()
     {
     this.em = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME).createEntityManager();
-    this.stmt = this.em.createNamedQuery("User.auth",User.class);
+    this.stmt = this.em.createNamedQuery("User.login",User.class);
     this.stmt.setParameter("username", this.username);
     this.stmt.setParameter("pwd", this.pwd);
     
