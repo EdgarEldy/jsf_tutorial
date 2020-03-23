@@ -9,27 +9,28 @@
     <ui:define name="content">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Produits</div>
+					<div class="panel-heading">Products</div>
 					<div class="panel-body">
 						<div class="col-md-6">
                                                     <f:view>
-                                                        <h:form role="form">
-                                                            <h:panelGrid columns="2">
-                                                            <div class="form-group">
-                                                                <h:outputLabel value="DesignationPduit:" for="designationPduit" />
-                                                                <h:inputText id="designationPduit" value="#{produitController.pduit.designationPduit}" 
-                                                                             title="DesignationPduit" />
-                                                            </div>
-                                                                <div class="form-group">
-                                                                   <h:outputLabel value="PuPduit:" for="puPduit" />
-                                                                <h:inputText id="puPduit" value="#{produitController.pduit.puPduit}" title="PuPduit" /> 
-                                                                </div>
+                                                        <h:form>
+                                                            <h1><h:outputText value="Create/Edit"/></h1>
+                                                            <h:panelGrid columns="2"> 
+                                                                <h:outputLabel value="FkCatId:" for="fkCatId" />
+                                                                <h:selectOneMenu id="fkCatId" class="form-control" value="#{productController.product.fkCatId}" title="FkCatId" >
+                                                                    <!-- TODO: update below reference to list of available items-->
+                                                                    <f:selectItems value="#{productController.showCategories()}" var="items" 
+                                                                                   itemValue="#{items.catId}" itemLabel="#{items.catName}"/>
+                                                                </h:selectOneMenu>
+                                                                <h:outputLabel value="ProductName:" for="productName" />
+                                                                <h:inputText id="productName" class="form-control" value="#{productController.product.productName}" title="ProductName" />
+                                                                <h:outputLabel value="UnitPrice:" for="unitPrice" />
+                                                                <h:inputText id="unitPrice" class="form-control" value="#{productController.product.unitPrice}" title="UnitPrice" />                                        
+                                                                <h:commandButton class="btn btn-primary" value="Save" action="#{productController.add()}"/>                                                                
+                                                                <h:commandButton type="reset" class="btn btn-default" value="Reset"/>
                                                             </h:panelGrid>
-                                                            <h:commandButton value="Valider" class="btn btn-primary" action="#{produitController.add()}"/>
-                                                            <h:commandButton value="Annuler" class="reset" />
                                                         </h:form>
                                                     </f:view>
-
                                                 </div>
 					</div>
 				</div>
