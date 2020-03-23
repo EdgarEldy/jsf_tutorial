@@ -36,8 +36,8 @@
                                                 <h:inputSecret class="form-control" id="loginPwd" value="#{userController.pwd}" title="Pwd" />
                                                 <span class="invalid-feedback"><h:message for="loginPwd"/></span>
                                             </div>
-                                                <h:commandButton class="btn btn-primary" value="Entrer" action="#{userController.login()}"/>
-                                            <h:commandButton class="btn btn-reset" value="Annuler"/>
+                                                <h:commandButton class="btn btn-primary" type="submit" value="Enter" action="#{userController.login()}"/>
+                                                <h:commandButton class="btn btn-reset" type="reset" value="Reset"/>
                                             </fieldset>
                                         </h:form>
                                     </f:view>
