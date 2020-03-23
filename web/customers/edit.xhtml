@@ -7,25 +7,33 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
+        <div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Customers</div>
+					<div class="panel-body">
+						<div class="col-md-6">
         <f:view>
 
 
             <h:form>
-                <h1><h:outputText value="Create/Edit"/></h1>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="NomClient:" for="nomClient" />
-                    <h:inputText id="nomClient" value="#{clientController.client.nomClient}" title="NomClient" />
-                    <h:outputLabel value="PrenomClient:" for="prenomClient" />
-                    <h:inputText id="prenomClient" value="#{clientController.client.prenomClient}" title="PrenomClient" />
-                    <h:outputLabel value="TelClient:" for="telClient" />
-                    <h:inputText id="telClient" value="#{clientController.client.telClient}" title="TelClient" />
-                    <h:outputLabel value="AdresseClient:" for="adresseClient" />
-                    <h:inputText id="adresseClient" value="#{clientController.client.adresseClient}" title="AdresseClient" />
-                    <h:commandButton class="btn btn-primary" value="Modifier" action="#{clientController.update()}"/>
+                    <h:outputLabel value="Customer id :" for="customerId" />
+                    <h:inputText id="customerId" class="form-control" value="#{customerController.customer.customerId}" title="CustomerId" required="true" requiredMessage="The CustomerId field is required."/>
+                    <h:outputLabel value="Name:" for="name" />
+                    <h:inputText id="name" class="form-control" value="#{customerController.customer.name}" title="Name" />
+                    <h:outputLabel value="Tel:" for="tel" />
+                    <h:inputText id="tel" class="form-control" value="#{customerController.customer.tel}" title="Tel" />
+                    <h:outputLabel value="Address:" for="address" />
+                    <h:inputText id="address" class="form-control" value="#{customerController.customer.address}" title="Address" />
+                    <h:commandButton type="submit" class="btn btn-primary" value="Save" action="#{customerController.update()}"/>
+                    <h:commandButton type="reset" class="btn btn-default" value="Reset"/>
                 </h:panelGrid>
             </h:form>
         </f:view>
-
+ </div>
+					</div>
+				</div>
+			</div><!-- /.col-->
     </ui:define>
 
 </ui:composition>
