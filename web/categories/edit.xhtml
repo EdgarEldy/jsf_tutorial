@@ -8,27 +8,25 @@
 
     <ui:define name="content">
         <div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">Categories</div>
-					<div class="panel-body">
-						<div class="col-md-6">
-                                                    <f:view>
-                                                        <h:form>
-                                                            <h:panelGrid columns="2">
-                                                                <h:outputLabel value="Category Id:" for="catId" />
-                                                                <h:inputText id="catId" class="form-control" value="#{categoryController.category.catId}" title="CatId" required="true" requiredMessage="The CatId field is required."/>
-                                                                <h:outputLabel value="CatName:" for="catName" />
-                                                                <h:inputText id="catName" class="form-control" value="#{categoryController.category.catName}" title="CatName" />
-                                                                <h:commandButton type="submit" class="btn btn-primary" value="Save" action="#{categoryController.update()}"/>
-                                                                <h:commandButton type="reset" class="btn btn-default" value="Reset"/>
-                                                            </h:panelGrid>
-                                                        </h:form>
-                                                    </f:view>
+            <div class="panel panel-default">
+                <div class="panel-heading">Update a product category</div>
+                <div class="panel-body">
+                    <div class="col-md-6">
+                        <f:view>
+                            <h:form>
+                                <div class="form-group">
+                                    <h:outputLabel value="Category name :" for="catName" />
+                                    <h:inputText id="catName" class="form-control" value="#{categoryController.category.catName}" title="Category name" />
+                                </div>
+                                    <h:commandButton type="submit" class="btn btn-primary" value="Save" action="#{categoryController.update()}"/>
+                                    <h:commandButton type="reset" class="btn btn-default" value="Reset"/>
+                            </h:form>
+                        </f:view>
 
-                                                </div>
-					</div>
-				</div>
-			</div><!-- /.col-->
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.col-->
     </ui:define>
 
 </ui:composition>
