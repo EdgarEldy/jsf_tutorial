@@ -13,36 +13,38 @@
                     <div class="panel-body">
                         <a href="${facesContext.externalContext.requestContextPath}/products/add.xhtml" 
                             class="btn btn-primary">New</a>
+                            <br/>
+                            <br/>
                             <f:view>
                                 <h:form>
                                     <h:dataTable class="table table-striped table-bordered" value="#{productController.show()}" var="item">
                                         <h:column>
                                             <f:facet name="header">
-                                                <h:outputText value="ProductId"/>
+                                                <h:outputText value="#"/>
                                             </f:facet>
                                             <h:outputText value="#{item.productId}"/>
                                         </h:column>
                                         <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Category name"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.fkCatId.catName}"/>
+                                        </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                <h:outputText value="FkCatId"/>
-                                            </f:facet>
-                                            <h:outputText value="#{item.fkCatId}"/>
-                                        </h:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="ProductName"/>
+                                                <h:outputText value="Product name"/>
                                             </f:facet>
                                             <h:outputText value="#{item.productName}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                <h:outputText value="UnitPrice"/>
+                                                <h:outputText value="Unit price"/>
                                             </f:facet>
                                             <h:outputText value="#{item.unitPrice}"/>
                                         </h:column>
                                         <h:column>
                                                 <f:facet name="header">
-                                                    <h:outputText value="Option"/>
+                                                    <h:outputText value="Options"/>
                                                 </f:facet>
                                                     <h:commandLink value="Edit" class="btn btn-primary" 
                                                                    action="#{productController.edit(item.productId)}"/>
