@@ -9,6 +9,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
+/**
+ * Plumbing-only servlet filter skeleton mapped to every request; the actual
+ * authentication/authorization rules are wired in by feature/auth.
+ * <p>
+ * Created by Edgar Muhamyangabo on 8/17/26
+ * Author : Edgar Muhamyangabo
+ * Date : 8/17/26
+ * Project : jsf_tutorial
+ */
 @WebFilter("/*")
 public class AuthFilter implements Filter {
 
