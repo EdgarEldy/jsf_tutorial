@@ -15,7 +15,8 @@ This document is the **complete specification** of the project: it is meant to b
 - [Branching strategy](#branching-strategy)
 - [feature/core-architecture](#featurecore-architecture)
 - [feature/auth](#featureauth)
-- [feature/catalog](#featurecatalog)
+- [feature/categories](#featurecategories)
+- [feature/products](#featureproducts)
 - [feature/customers](#featurecustomers)
 - [feature/orders](#featureorders)
 - [Order of work](#order-of-work)
@@ -31,6 +32,7 @@ This document is the **complete specification** of the project: it is meant to b
 | Platform | Java EE 8 (`javax.*`) |
 | View technology | JSF 2.3 (Mojarra reference implementation) |
 | UI components | PrimeFaces 13.0.x |
+| Dashboard/admin template | AdminFaces `admin-template` 1.5.2 (Bootstrap + AdminLTE, `/admin.xhtml`), extended by `templates/layout.xhtml` |
 | Managed beans | CDI (`@Named`, `@RequestScoped`/`@ViewScoped`/`@SessionScoped`) |
 | ORM | EclipseLink (JPA 2.2) |
 | Application server | Apache Tomcat 9.x |
@@ -123,7 +125,7 @@ jsf_tutorial/
 │   │       ├── resources/
 │   │       │   └── css/theme.css                   (small overrides on top of a PrimeFaces theme)
 │   │       ├── templates/
-│   │       │   └── layout.xhtml                    (Facelets template: PrimeFaces menubar, ui:insert content)
+│   │       │   └── layout.xhtml                    (extends AdminFaces' /admin.xhtml: sidebar menu, growl, ui:insert content)
 │   │       ├── auth/
 │   │       │   ├── login.xhtml, register.xhtml, activate.xhtml,
 │   │       │   │   forgot-password.xhtml, reset-password.xhtml
@@ -170,7 +172,8 @@ public final class FacesMessageUtil {
 | `develop` | Integration branch. |
 | `feature/core-architecture` | Maven/WAR setup, JPA/EclipseLink configuration, Facelets template, base DAO, exception handling, Docker dev environment. |
 | `feature/auth` | Login, registration, account activation, password reset, session-based access control. |
-| `feature/catalog` | Admin-only category/product management pages. |
+| `feature/categories` | Admin-only category management pages. |
+| `feature/products` | Admin-only product management pages, linked to `categories` via a foreign key. |
 | `feature/customers` | Customer profile page, linked to `users` via a foreign key. |
 | `feature/orders` | Order placement, customer order history, admin order listing. |
 
@@ -181,7 +184,7 @@ public final class FacesMessageUtil {
 - [ ] `pom.xml`: `war` packaging, dependencies on `javax.faces-api`, PrimeFaces 13.0.x, EclipseLink, MySQL Connector/J, jBCrypt
 - [ ] `META-INF/persistence.xml`: EclipseLink persistence unit pointing at MySQL, schema generation enabled for local development
 - [ ] `BaseDao<T>`/`BaseDaoImpl<T>`: generic `EntityManager`-based CRUD (`findById`, `findAll`, `save`, `delete`), every specific DAO extends it
-- [ ] `templates/layout.xhtml`: PrimeFaces `<p:menubar>`, a `<p:growl>` bound globally, `<ui:insert name="content">` for page bodies
+- [ ] `templates/layout.xhtml`: extends AdminFaces' `/admin.xhtml` (sidebar menu, logo, head), a `<p:growl>` bound globally, `<ui:insert name="content">` for page bodies
 - [ ] `CustomExceptionHandlerFactory` + `faces-config.xml` registration: catches unhandled exceptions from any managed bean action, logs them, adds a generic error `FacesMessage`
 - [ ] `FacesMessageUtil`
 - [ ] `AuthFilter` skeleton (`@WebFilter("/*")`) — no rules yet, just the plumbing; `feature/auth` fills in the actual authorization logic
@@ -211,7 +214,7 @@ public final class FacesMessageUtil {
 - [ ] The five `.xhtml` pages under `auth/`, using PrimeFaces `<p:inputText>`/`<p:password>`/`<p:commandButton>` inside the shared `layout.xhtml` template
 - [ ] Unit tests (`UserService`, `PasswordHasher`), Arquillian integration tests (`UserDao` against a real `EntityManager`), Selenium e2e test covering register → activate → login
 
-## feature/catalog
+## feature/categories
 
 Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict `/admin/*`.
 
@@ -220,17 +223,35 @@ Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict 
 | URL | Bean | Access | Description |
 |---|---|---|---|
 | `/admin/categories.xhtml` | `CategoryBean` | ADMIN | List/create/edit/delete categories |
+
+### Tasks
+
+- [ ] `Category` entity
+- [ ] `CategoryDao` + implementation
+- [ ] `CategoryService` (interface) + implementation
+- [ ] Business rule: deleting a category that still has products is rejected with a `BusinessRuleException`, surfaced via `FacesMessageUtil.addError` (products don't exist yet on this branch — implement the rule against `CategoryDao`'s product-count lookup, exercised for real once `feature/products` lands)
+- [ ] `CategoryBean` (`@Named @ViewScoped`, so the PrimeFaces `<p:dataTable>` state survives AJAX postbacks within the page)
+- [ ] `categories.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, `<p:dialog>` for the create/edit form
+- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → attempted delete of a non-empty category (expects the rejection message)
+
+## feature/products
+
+Admin-only. Depends on `feature/categories` (`Product.category` is a real foreign key to `Category`).
+
+### Pages
+
+| URL | Bean | Access | Description |
+|---|---|---|---|
 | `/admin/products.xhtml` | `ProductBean` | ADMIN | List/create/edit/delete products, filter by category |
 
 ### Tasks
 
-- [ ] `Category`, `Product` entities
-- [ ] `CategoryDao`, `ProductDao` + implementations
-- [ ] `CategoryService`, `ProductService` (interfaces) + implementations
-- [ ] Business rule: deleting a category that still has products is rejected with a `BusinessRuleException`, surfaced via `FacesMessageUtil.addError`
-- [ ] `CategoryBean`, `ProductBean` (`@Named @ViewScoped`, so the PrimeFaces `<p:dataTable>` state survives AJAX postbacks within the page)
-- [ ] `categories.xhtml`/`products.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, `<p:dialog>` for the create/edit form
-- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → attempted delete of a non-empty category (expects the rejection message)
+- [ ] `Product` entity (`@ManyToOne` to `Category`)
+- [ ] `ProductDao` + implementation (includes a find-by-category query)
+- [ ] `ProductService` (interface) + implementation
+- [ ] `ProductBean` (`@Named @ViewScoped`)
+- [ ] `products.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, category filter, `<p:dialog>` for the create/edit form
+- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → filter by category
 
 ## feature/customers
 
@@ -273,10 +294,11 @@ Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict 
 
 1. `feature/core-architecture` → Pull Request to `develop`
 2. `feature/auth` (depends on `core-architecture`) → Pull Request to `develop`
-3. `feature/catalog` (depends on `auth` for `/admin/*` protection) → Pull Request to `develop`
-4. `feature/customers` (depends on `auth`) → Pull Request to `develop`
-5. `feature/orders` (depends on `catalog`, `customers`) → Pull Request to `develop`
-6. `develop` → `master`
+3. `feature/categories` (depends on `auth` for `/admin/*` protection) → Pull Request to `develop`
+4. `feature/products` (depends on `categories`) → Pull Request to `develop`
+5. `feature/customers` (depends on `auth`) → Pull Request to `develop`
+6. `feature/orders` (depends on `products`, `customers`) → Pull Request to `develop`
+7. `develop` → `master`
 
 ## Code conventions
 
@@ -291,7 +313,8 @@ Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict 
 
 - JSF 2.3 with Facelets templating (`ui:insert`/`ui:composition`)
 - CDI-managed beans and scopes (`@RequestScoped`, `@ViewScoped`, `@SessionScoped`)
-- PrimeFaces components (`p:dataTable`, `p:dialog`, `p:growl`, `p:menubar`)
+- PrimeFaces components (`p:dataTable`, `p:dialog`, `p:growl`, `p:link`)
+- AdminFaces `admin-template` (Bootstrap + AdminLTE dashboard layout, sidebar menu)
 - JPA/EclipseLink entity mapping, including `@ManyToMany` join tables
 - The DAO + service contract/implementation layering
 - Session-based authentication and filter-based authorization (`@WebFilter`)
@@ -303,6 +326,6 @@ Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict 
 ## How to follow this tutorial
 
 1. Clone the repository and check out `develop`
-2. Follow the branches in order: `feature/core-architecture` → `feature/auth` → `feature/catalog` → `feature/customers` → `feature/orders`
+2. Follow the branches in order: `feature/core-architecture` → `feature/auth` → `feature/categories` → `feature/products` → `feature/customers` → `feature/orders`
 3. Run `docker-compose up` for MySQL, then deploy the WAR to the local Tomcat 9 (`mvn package`, then copy `target/jsf_tutorial.war` to `/opt/tomcat9/webapps/`, or use the Tomcat Maven plugin)
 4. Access the application at `http://localhost:8080/jsf_tutorial/`
