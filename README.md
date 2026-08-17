@@ -181,15 +181,15 @@ public final class FacesMessageUtil {
 
 ### Tasks
 
-- [ ] `pom.xml`: `war` packaging, dependencies on `javax.faces-api`, PrimeFaces 13.0.x, EclipseLink, MySQL Connector/J, jBCrypt
-- [ ] `META-INF/persistence.xml`: EclipseLink persistence unit pointing at MySQL, schema generation enabled for local development
-- [ ] `BaseDao<T>`/`BaseDaoImpl<T>`: generic `EntityManager`-based CRUD (`findById`, `findAll`, `save`, `delete`), every specific DAO extends it
-- [ ] `templates/layout.xhtml`: extends AdminFaces' `/admin.xhtml` (sidebar menu, logo, head), a `<p:growl>` bound globally, `<ui:insert name="content">` for page bodies
-- [ ] `CustomExceptionHandlerFactory` + `faces-config.xml` registration: catches unhandled exceptions from any managed bean action, logs them, adds a generic error `FacesMessage`
-- [ ] `FacesMessageUtil`
-- [ ] `AuthFilter` skeleton (`@WebFilter("/*")`) — no rules yet, just the plumbing; `feature/auth` fills in the actual authorization logic
-- [ ] `docker-compose.yml`: `mysql` service, for local development (Tomcat 9 runs locally, not containerized)
-- [ ] `.github/workflows/ci.yml`: `mvn verify` running the unit and Arquillian integration test suites
+- [x] `pom.xml`: `war` packaging, dependencies on `javax.faces-api`, PrimeFaces 13.0.x, EclipseLink, MySQL Connector/J, jBCrypt
+- [x] `META-INF/persistence.xml`: EclipseLink persistence unit pointing at MySQL, schema generation enabled for local development
+- [x] `BaseDao<T>`/`BaseDaoImpl<T>`: generic `EntityManager`-based CRUD (`findById`, `findAll`, `save`, `delete`), every specific DAO extends it
+- [x] `templates/layout.xhtml`: extends AdminFaces' `/admin.xhtml` (sidebar menu, logo, head), a `<p:growl>` bound globally, `<ui:insert name="content">` for page bodies
+- [x] `CustomExceptionHandlerFactory` + `faces-config.xml` registration: catches unhandled exceptions from any managed bean action, logs them, adds a generic error `FacesMessage`
+- [x] `FacesMessageUtil`
+- [x] `AuthFilter` skeleton (`@WebFilter("/*")`) — no rules yet, just the plumbing; `feature/auth` fills in the actual authorization logic
+- [x] `docker-compose.yml`: `mysql` service, for local development (Tomcat 9 runs locally, not containerized)
+- [x] `.github/workflows/ci.yml`: `mvn verify` running the unit and Arquillian integration test suites
 
 ## feature/auth
 
