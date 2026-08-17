@@ -10,9 +10,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Tomcat has no Java EE container to satisfy {@code @PersistenceContext}, so
- * DAOs get their {@link EntityManager} through CDI instead (see
- * BaseDaoImpl#getEntityManager).
+ * CDI producer/disposer pair handing DAOs a request-scoped {@link EntityManager}
+ * backed by a single lazily-created {@link EntityManagerFactory}, replacing the
+ * container-managed {@code @PersistenceContext} Tomcat can't provide.
+ * <p>
+ * Created by Edgar Muhamyangabo on 8/17/26
+ * Author : Edgar Muhamyangabo
+ * Date : 8/17/26
+ * Project : jsf_tutorial
  */
 @ApplicationScoped
 public class EntityManagerProducer {
