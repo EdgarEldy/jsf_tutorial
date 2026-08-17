@@ -1,0 +1,70 @@
+name: Selenium e2e
+
+# Manually triggered, per README.md § Tech stack: this suite exercises a full
+# Tomcat 9 + MySQL + MailHog + headless Chrome stack and isn't part of the
+# mvn verify gate that runs on every push.
+on:
+  workflow_dispatch:
+
+jobs:
+  selenium:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: jsf_tutorial_db
+          MYSQL_USER: jsf_tutorial
+          MYSQL_PASSWORD: jsf_tutorial
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -ujsf_tutorial -pjsf_tutorial"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+      mailhog:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+          - 8025:8025
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+          cache: maven
+
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Build the WAR
+        run: mvn -B clean package -DskipTests
+
+      - name: Set up Tomcat 9
+        run: |
+          curl -fsSL -o /tmp/tomcat.tar.gz \
+            https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.106/bin/apache-tomcat-9.0.106.tar.gz
+          tar -xzf /tmp/tomcat.tar.gz -C /opt
+          mv /opt/apache-tomcat-9.0.106 /opt/tomcat9
+          cp target/jsf_tutorial.war /opt/tomcat9/webapps/jsf_tutorial.war
+          /opt/tomcat9/bin/startup.sh
+          timeout 60 bash -c 'until curl -sf http://localhost:8080/jsf_tutorial/index.xhtml; do sleep 2; done'
+
+      - name: Run the Selenium suite
+        run: >
+          mvn -B test
+          -Dtest=RegisterActivateLoginE2E
+          -DfailIfNoTests=false
+          -Dapp.baseUrl=http://localhost:8080/jsf_tutorial
+          -Dmailhog.apiUrl=http://localhost:8025
+
+      - name: Stop Tomcat
+        if: always()
+        run: /opt/tomcat9/bin/shutdown.sh
