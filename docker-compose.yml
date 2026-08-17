@@ -10,6 +10,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: jsf_tutorial_db
+      MYSQL_USER: jsf_tutorial
+      MYSQL_PASSWORD: jsf_tutorial
     ports:
       - "3306:3306"
     volumes:
@@ -19,6 +21,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
 volumes:
   mysql_data:
