@@ -9,6 +9,16 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Generic {@link EntityManager}-based implementation of {@link BaseDao},
+ * managing its own RESOURCE_LOCAL transactions around every write since
+ * Tomcat has no JTA transaction manager to do it for us.
+ * <p>
+ * Created by Edgar Muhamyangabo on 8/17/26
+ * Author : Edgar Muhamyangabo
+ * Date : 8/17/26
+ * Project : jsf_tutorial
+ */
 public abstract class BaseDaoImpl<T, ID extends Serializable> implements BaseDao<T, ID> {
 
     private final Class<T> entityClass;
