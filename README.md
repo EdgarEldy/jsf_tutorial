@@ -38,6 +38,7 @@ This document is the **complete specification** of the project: it is meant to b
 | Application server | Apache Tomcat 9.x |
 | Database | MySQL 8.0 |
 | Password hashing | jBCrypt |
+| Email | JavaMail (`com.sun.mail:javax.mail`), sent via `EmailService`/`EmailServiceImpl`; MailHog for local dev (SMTP catcher, no real delivery), real SMTP host via `MAIL_HOST`/`MAIL_PORT` env vars in production |
 | Build | Maven, `war` packaging |
 | Tests | JUnit 5, Mockito (services/DAOs), Arquillian (container integration tests), Selenium (end-to-end UI flows) |
 | CI/CD | GitHub Actions (`mvn verify` for unit/integration tests; Selenium suite documented as a separate, manually triggered job) |
@@ -92,13 +93,16 @@ jsf_tutorial/
 │   │   │   ├── dao/
 │   │   │   │   ├── BaseDao.java                 (contract: findById, findAll, save, delete — generic)
 │   │   │   │   ├── impl/BaseDaoImpl.java         (EntityManager-based implementation)
-│   │   │   │   ├── UserDao.java, RoleDao.java, CategoryDao.java, ProductDao.java,
-│   │   │   │   │   CustomerDao.java, OrderDao.java   (each extends BaseDao, adds specific queries)
+│   │   │   │   ├── UserDao.java, RoleDao.java, ActivationTokenDao.java, PasswordResetTokenDao.java,
+│   │   │   │   │   CategoryDao.java, ProductDao.java, CustomerDao.java, OrderDao.java
+│   │   │   │   │   (each extends BaseDao, adds specific queries)
 │   │   │   │   └── impl/ (one *DaoImpl per interface above)
 │   │   │   ├── service/
-│   │   │   │   ├── UserService.java, CategoryService.java, ProductService.java,
+│   │   │   │   ├── UserService.java, EmailService.java, CategoryService.java, ProductService.java,
 │   │   │   │   │   CustomerService.java, OrderService.java   (contracts)
 │   │   │   │   └── impl/ (one *ServiceImpl per interface, CDI @ApplicationScoped — no EJB container on Tomcat)
+│   │   │   ├── config/
+│   │   │   │   └── EntityManagerProducer.java    (CDI producer for EntityManager — no @PersistenceContext on Tomcat)
 │   │   │   ├── bean/
 │   │   │   │   ├── LoginBean.java, RegisterBean.java, ActivateAccountBean.java,
 │   │   │   │   │   ForgotPasswordBean.java, ResetPasswordBean.java  (@Named, backing the auth pages)
@@ -125,10 +129,13 @@ jsf_tutorial/
 │   │       ├── resources/
 │   │       │   └── css/theme.css                   (small overrides on top of a PrimeFaces theme)
 │   │       ├── templates/
-│   │       │   └── layout.xhtml                    (extends AdminFaces' /admin.xhtml: sidebar menu, growl, ui:insert content)
+│   │       │   ├── layout.xhtml                    (extends AdminFaces' /admin.xhtml: sidebar menu, growl, ui:insert content — logged-in pages only)
+│   │       │   └── auth-layout.xhtml                (minimal, sidebar-free: public pages only)
 │   │       ├── auth/
 │   │       │   ├── login.xhtml, register.xhtml, activate.xhtml,
 │   │       │   │   forgot-password.xhtml, reset-password.xhtml
+│   │       ├── errors/
+│   │       │   └── access-denied.xhtml
 │   │       ├── admin/
 │   │       │   ├── categories.xhtml, products.xhtml, orders.xhtml
 │   │       ├── shop/
@@ -206,13 +213,14 @@ public final class FacesMessageUtil {
 ### Tasks
 
 - [ ] `User`, `Role`, `Permission` entities (`@ManyToMany` via `role_user`/`role_permission` join tables), `ActivationToken`, `BlacklistedToken`, `PasswordResetToken`
-- [ ] `UserDao`, `RoleDao` + implementations
-- [ ] `UserService` (interface) + implementation: registration, activation, login verification, password reset — all password comparisons go through `PasswordHasher` (jBCrypt), never a plain-text comparison
+- [ ] `UserDao`, `RoleDao`, `ActivationTokenDao`, `PasswordResetTokenDao` + implementations
+- [ ] `EmailService` (interface) + `EmailServiceImpl` implementation (JavaMail): `sendActivationEmail`/`sendPasswordResetEmail`, each building a link back to `/auth/activate.xhtml?token=...`/`/auth/reset-password.xhtml?token=...` from a configurable base URL (`APP_BASE_URL` env var), sent off the request thread
+- [ ] `UserService` (interface) + implementation: registration (creates a disabled account + activation token, triggers `sendActivationEmail`), activation (validates the token, enables the account, keeps the token row with `validated_at` set), login verification, forgotten password (creates a password-reset token, triggers `sendPasswordResetEmail`), password reset (validates the token, updates the password, consumes/removes the token) — all password comparisons go through `PasswordHasher` (jBCrypt), never a plain-text comparison
 - [ ] `SessionUserHolder` (`@Named @SessionScoped`): holds the authenticated `User` (or `null`) and their resolved permissions for the duration of the HTTP session
 - [ ] `AuthFilter` filled in: reads `SessionUserHolder`, redirects unauthenticated users hitting a non-public page to `/auth/login.xhtml`, and users lacking the required role hitting `/admin/*` to an "access denied" page
 - [ ] `LoginBean`, `RegisterBean`, `ActivateAccountBean`, `ForgotPasswordBean`, `ResetPasswordBean` (`@Named @RequestScoped`), each calling `UserService` and reporting outcome via `FacesMessageUtil`
-- [ ] The five `.xhtml` pages under `auth/`, using PrimeFaces `<p:inputText>`/`<p:password>`/`<p:commandButton>` inside the shared `layout.xhtml` template
-- [ ] Unit tests (`UserService`, `PasswordHasher`), Arquillian integration tests (`UserDao` against a real `EntityManager`), Selenium e2e test covering register → activate → login
+- [ ] `templates/auth-layout.xhtml`: a minimal, sidebar-free public-page template (unlike `layout.xhtml`'s AdminLTE dashboard chrome, which only makes sense once a user is logged in) — the five `.xhtml` pages under `auth/` (plus `errors/access-denied.xhtml`) extend it, using PrimeFaces `<p:inputText>`/`<p:password>`/`<p:commandButton>`
+- [ ] Unit tests (`UserService`, `PasswordHasher`, `EmailService` message-building), Arquillian integration tests (`UserDao` against a real `EntityManager`), Selenium e2e test covering register → activate → login
 
 ## feature/categories
 
