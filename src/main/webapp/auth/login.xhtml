@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/auth-layout.xhtml">
+    <ui:define name="title">Log in</ui:define>
+    <ui:define name="content">
+        <h2>Log in</h2>
+        <h:form prependId="false">
+            <p:messages showDetail="true" closable="true"/>
+
+            <p:outputLabel for="email" value="Email"/>
+            <p:inputText id="email" value="#{loginBean.email}" required="true"/>
+
+            <p:outputLabel for="password" value="Password"/>
+            <p:password id="password" value="#{loginBean.password}" required="true" feedback="false"/>
+
+            <p:commandButton value="Log in" action="#{loginBean.login}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
