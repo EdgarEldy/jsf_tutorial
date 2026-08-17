@@ -212,15 +212,15 @@ public final class FacesMessageUtil {
 
 ### Tasks
 
-- [ ] `User`, `Role`, `Permission` entities (`@ManyToMany` via `role_user`/`role_permission` join tables), `ActivationToken`, `BlacklistedToken`, `PasswordResetToken`
-- [ ] `UserDao`, `RoleDao`, `ActivationTokenDao`, `PasswordResetTokenDao` + implementations
-- [ ] `EmailService` (interface) + `EmailServiceImpl` implementation (JavaMail): `sendActivationEmail`/`sendPasswordResetEmail`, each building a link back to `/auth/activate.xhtml?token=...`/`/auth/reset-password.xhtml?token=...` from a configurable base URL (`APP_BASE_URL` env var), sent off the request thread
-- [ ] `UserService` (interface) + implementation: registration (creates a disabled account + activation token, triggers `sendActivationEmail`), activation (validates the token, enables the account, keeps the token row with `validated_at` set), login verification, forgotten password (creates a password-reset token, triggers `sendPasswordResetEmail`), password reset (validates the token, updates the password, consumes/removes the token) — all password comparisons go through `PasswordHasher` (jBCrypt), never a plain-text comparison
-- [ ] `SessionUserHolder` (`@Named @SessionScoped`): holds the authenticated `User` (or `null`) and their resolved permissions for the duration of the HTTP session
-- [ ] `AuthFilter` filled in: reads `SessionUserHolder`, redirects unauthenticated users hitting a non-public page to `/auth/login.xhtml`, and users lacking the required role hitting `/admin/*` to an "access denied" page
-- [ ] `LoginBean`, `RegisterBean`, `ActivateAccountBean`, `ForgotPasswordBean`, `ResetPasswordBean` (`@Named @RequestScoped`), each calling `UserService` and reporting outcome via `FacesMessageUtil`
-- [ ] `templates/auth-layout.xhtml`: a minimal, sidebar-free public-page template (unlike `layout.xhtml`'s AdminLTE dashboard chrome, which only makes sense once a user is logged in) — the five `.xhtml` pages under `auth/` (plus `errors/access-denied.xhtml`) extend it, using PrimeFaces `<p:inputText>`/`<p:password>`/`<p:commandButton>`
-- [ ] Unit tests (`UserService`, `PasswordHasher`, `EmailService` message-building), Arquillian integration tests (`UserDao` against a real `EntityManager`), Selenium e2e test covering register → activate → login
+- [x] `User`, `Role`, `Permission` entities (`@ManyToMany` via `role_user`/`role_permission` join tables), `ActivationToken`, `BlacklistedToken`, `PasswordResetToken`
+- [x] `UserDao`, `RoleDao`, `ActivationTokenDao`, `PasswordResetTokenDao` + implementations
+- [x] `EmailService` (interface) + `EmailServiceImpl` implementation (JavaMail): `sendActivationEmail`/`sendPasswordResetEmail`, each building a link back to `/auth/activate.xhtml?token=...`/`/auth/reset-password.xhtml?token=...` from a configurable base URL (`APP_BASE_URL` env var), sent off the request thread
+- [x] `UserService` (interface) + implementation: registration (creates a disabled account + activation token, triggers `sendActivationEmail`), activation (validates the token, enables the account, keeps the token row with `validated_at` set), login verification, forgotten password (creates a password-reset token, triggers `sendPasswordResetEmail`), password reset (validates the token, updates the password, consumes/removes the token) — all password comparisons go through `PasswordHasher` (jBCrypt), never a plain-text comparison
+- [x] `SessionUserHolder` (`@Named @SessionScoped`): holds the authenticated `User` (or `null`) and their resolved permissions for the duration of the HTTP session
+- [x] `AuthFilter` filled in: reads `SessionUserHolder`, redirects unauthenticated users hitting a non-public page to `/auth/login.xhtml`, and users lacking the required role hitting `/admin/*` to an "access denied" page
+- [x] `LoginBean`, `RegisterBean`, `ActivateAccountBean`, `ForgotPasswordBean`, `ResetPasswordBean` (`@Named @RequestScoped`), each calling `UserService` and reporting outcome via `FacesMessageUtil`
+- [x] `templates/auth-layout.xhtml`: a minimal, sidebar-free public-page template (unlike `layout.xhtml`'s AdminLTE dashboard chrome, which only makes sense once a user is logged in) — the five `.xhtml` pages under `auth/` (plus `errors/access-denied.xhtml`) extend it, using PrimeFaces `<p:inputText>`/`<p:password>`/`<p:commandButton>`
+- [x] Unit tests (`UserService`, `PasswordHasher`, `EmailService` message-building), Arquillian integration tests (`UserDao` against a real `EntityManager`), Selenium e2e test covering register → activate → login
 
 ## feature/categories
 
