@@ -1,3 +1,24 @@
 .content {
     padding: 1.5rem;
 }
+
+/* Public pages (auth/*, access-denied) intentionally don't use the AdminLTE
+   dashboard layout/sidebar — that chrome only makes sense once a user is
+   logged in. This is a plain centered card instead. */
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f4f6f9;
+    margin: 0;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 26rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
