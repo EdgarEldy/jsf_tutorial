@@ -51,6 +51,23 @@
             <version>${primefaces.version}</version>
         </dependency>
 
+        <!-- AdminFaces: dashboard/admin template (Bootstrap + AdminLTE) providing
+             /admin.xhtml, extended by templates/layout.xhtml. 1.5.2 is the last
+             javax.*/Java EE 8 release (1.6.0+ moved to jakarta.*, incompatible
+             with this stack). Its own transitive PrimeFaces (10.0.0) is excluded
+             in favor of the version declared above. -->
+        <dependency>
+            <groupId>com.github.adminfaces</groupId>
+            <artifactId>admin-template</artifactId>
+            <version>1.5.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.primefaces</groupId>
+                    <artifactId>primefaces</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- EclipseLink JPA provider (brings javax.persistence-api transitively) -->
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
