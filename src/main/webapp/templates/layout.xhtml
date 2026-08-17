@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/admin.xhtml">
+
+    <ui:define name="head">
+        <title><ui:insert name="title">jsf_tutorial</ui:insert></title>
+        <h:outputStylesheet library="css" name="theme.css"/>
+    </ui:define>
+
+    <ui:define name="logo-lg">jsf_tutorial</ui:define>
+    <ui:define name="logo-mini">JT</ui:define>
+
+    <ui:define name="menu">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li>
+                <p:link outcome="/index.xhtml">
+                    <i class="fa fa-home"></i>
+                    <span>Home</span>
+                </p:link>
+            </li>
+            <li class="header">Catalog</li>
+            <li>
+                <p:link outcome="/admin/categories.xhtml">
+                    <i class="fa fa-tags"></i>
+                    <span>Categories</span>
+                </p:link>
+            </li>
+            <li>
+                <p:link outcome="/admin/products.xhtml">
+                    <i class="fa fa-cube"></i>
+                    <span>Products</span>
+                </p:link>
+            </li>
+            <li class="header">Account</li>
+            <li>
+                <p:link outcome="/customer/my-orders.xhtml">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>My Orders</span>
+                </p:link>
+            </li>
+            <li>
+                <p:link outcome="/customer/profile.xhtml">
+                    <i class="fa fa-user"></i>
+                    <span>Profile</span>
+                </p:link>
+            </li>
+            <li>
+                <p:link outcome="/auth/login.xhtml">
+                    <i class="fa fa-sign-in"></i>
+                    <span>Login</span>
+                </p:link>
+            </li>
+        </ul>
+    </ui:define>
+
+    <ui:define name="body">
+        <p:growl id="growl" showDetail="true"/>
+        <ui:insert name="content"/>
+    </ui:define>
+</ui:composition>
