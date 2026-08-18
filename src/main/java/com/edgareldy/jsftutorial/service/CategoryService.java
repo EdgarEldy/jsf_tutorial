@@ -1,13 +1,13 @@
 package com.edgareldy.jsftutorial.service;
 
 import com.edgareldy.jsftutorial.entity.Category;
+import com.edgareldy.jsftutorial.exception.BusinessRuleException;
 
 import java.util.List;
 
 /**
- * Plain CRUD for {@link Category} on this branch; feature/products adds the
- * business rule rejecting deletion of a non-empty category once {@code Product}
- * exists to make a category non-empty.
+ * CRUD for {@link Category}, including the rule that a category still
+ * holding products can't be deleted.
  * <p>
  * Created by Edgar Muhamyangabo on 8/17/26
  * Author : Edgar Muhamyangabo
@@ -18,7 +18,12 @@ public interface CategoryService {
 
     List<Category> findAll();
 
+    Category findById(Long id);
+
     Category save(Category category);
 
+    /**
+     * @throws BusinessRuleException if the category still has products
+     */
     void delete(Category category);
 }
