@@ -1,6 +1,7 @@
 package com.edgareldy.jsftutorial.bean;
 
 import com.edgareldy.jsftutorial.entity.Category;
+import com.edgareldy.jsftutorial.exception.BusinessRuleException;
 import com.edgareldy.jsftutorial.service.CategoryService;
 import com.edgareldy.jsftutorial.util.FacesMessageUtil;
 
@@ -52,9 +53,13 @@ public class CategoryBean implements Serializable {
     }
 
     public void delete(Category selected) {
-        categoryService.delete(selected);
-        categories = categoryService.findAll();
-        FacesMessageUtil.addInfo("Category deleted.");
+        try {
+            categoryService.delete(selected);
+            categories = categoryService.findAll();
+            FacesMessageUtil.addInfo("Category deleted.");
+        } catch (BusinessRuleException e) {
+            FacesMessageUtil.addError(e.getMessage());
+        }
     }
 
     public List<Category> getCategories() {
