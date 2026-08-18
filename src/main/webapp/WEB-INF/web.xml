@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-    <!-- Weld's CDI container bootstrap - Tomcat has no CDI container of its
-         own, unlike GlassFish -->
-    <listener>
-        <listener-class>org.jboss.weld.environment.servlet.EnhancedListener</listener-class>
-    </listener>
+    <!-- No explicit Weld listener declaration here: weld-servlet-shaded
+         registers org.jboss.weld.environment.servlet.EnhancedListener itself
+         via META-INF/services/javax.servlet.ServletContainerInitializer
+         (Servlet 3.0+ SCI mechanism). Declaring it again here registered it
+         twice and broke request-scope activation with a NullPointerException
+         in EnhancedListener.delegate on every request. -->
 
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
