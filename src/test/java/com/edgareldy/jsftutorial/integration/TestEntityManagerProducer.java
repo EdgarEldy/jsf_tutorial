@@ -9,11 +9,14 @@ import javax.persistence.Persistence;
 
 /**
  * Test-only substitute for {@code config.EntityManagerProducer}: produces a
- * plain {@code @Dependent} (unscoped) {@link EntityManager} instead of
- * {@code @RequestScoped}, since Arquillian's Weld-SE-embedded adapter has no
- * HTTP request to activate that context automatically. Fine for a single-
- * threaded JUnit run; the real request-scoping only matters under concurrent
- * Tomcat requests, which this DAO-level test isn't exercising.
+ * single {@code @ApplicationScoped} {@link EntityManager} shared by every DAO
+ * in the test run, instead of {@code @RequestScoped}. Arquillian's
+ * Weld-SE-embedded adapter has no HTTP request to activate that context
+ * automatically, and a plain {@code @Dependent} producer would hand each DAO
+ * its own EntityManager/persistence context, which breaks any test spanning
+ * more than one DAO (e.g. saving a Product referencing a Category persisted
+ * through a different DAO). One shared EntityManager mirrors what a single
+ * HTTP request actually gets in production.
  * <p>
  * Created by Edgar Muhamyangabo on 8/17/26
  * Author : Edgar Muhamyangabo
@@ -26,6 +29,7 @@ public class TestEntityManagerProducer {
     private EntityManagerFactory entityManagerFactory;
 
     @Produces
+    @ApplicationScoped
     public EntityManager createEntityManager() {
         return getEntityManagerFactory().createEntityManager();
     }

@@ -10,7 +10,6 @@ import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -24,6 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Integration test for {@link CategoryDaoImpl} against a real {@link javax.persistence.EntityManager},
  * packaged as an Arquillian Weld-SE micro-deployment.
+ * <p>
+ * Setup and cleanup happen entirely inside the {@code @Test} method rather
+ * than {@code @AfterEach}: Arquillian's local protocol invokes the
+ * {@code @Test} method on a different test class instance than the one
+ * JUnit runs lifecycle callbacks on, so an instance field set in
+ * {@code @Test} reads back as {@code null} in {@code @AfterEach}, making a
+ * cleanup guarded by {@code if (field != null)} there a silent no-op.
  * <p>
  * Created by Edgar Muhamyangabo on 8/17/26
  * Author : Edgar Muhamyangabo
@@ -48,23 +54,17 @@ class CategoryDaoIT {
     @Inject
     private CategoryDao categoryDao;
 
-    private Category savedCategory;
-
-    @AfterEach
-    void cleanUp() {
-        if (savedCategory != null && savedCategory.getId() != null) {
-            categoryDao.delete(savedCategory);
-        }
-    }
-
     @Test
     void savedCategoryIsFoundInFindAll() {
         Category category = new Category();
         category.setCategoryName("Arquillian-" + UUID.randomUUID());
-        savedCategory = categoryDao.save(category);
+        Category savedCategory = categoryDao.save(category);
 
-        List<Category> all = categoryDao.findAll();
-
-        assertTrue(all.stream().anyMatch(c -> c.getId().equals(savedCategory.getId())));
+        try {
+            List<Category> all = categoryDao.findAll();
+            assertTrue(all.stream().anyMatch(c -> c.getId().equals(savedCategory.getId())));
+        } finally {
+            categoryDao.delete(savedCategory);
+        }
     }
 }

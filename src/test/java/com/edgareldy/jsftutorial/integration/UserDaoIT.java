@@ -13,7 +13,6 @@ import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -29,6 +28,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Integration test for {@link UserDaoImpl} against a real {@link javax.persistence.EntityManager},
  * packaged as an Arquillian Weld-SE micro-deployment (no servlet container
  * needed to exercise a plain CDI + JPA DAO).
+ * <p>
+ * Setup and cleanup happen entirely inside each {@code @Test} method rather
+ * than {@code @AfterEach}: Arquillian's local protocol invokes the
+ * {@code @Test} method on a different test class instance than the one
+ * JUnit runs lifecycle callbacks on, so an instance field set in
+ * {@code @Test} reads back as {@code null} in {@code @AfterEach}, making a
+ * cleanup guarded by {@code if (field != null)} there a silent no-op.
  * <p>
  * Created by Edgar Muhamyangabo on 8/17/26
  * Author : Edgar Muhamyangabo
@@ -53,15 +59,6 @@ class UserDaoIT {
     @Inject
     private UserDao userDao;
 
-    private User savedUser;
-
-    @AfterEach
-    void cleanUp() {
-        if (savedUser != null && savedUser.getId() != null) {
-            userDao.delete(savedUser);
-        }
-    }
-
     @Test
     void findsAPersistedUserByEmail() {
         String email = "arquillian-" + UUID.randomUUID() + "@example.com";
@@ -72,11 +69,14 @@ class UserDaoIT {
         user.setPassword("hashed-password");
         user.setEnabled(true);
         user.setAccountLocked(false);
-        savedUser = userDao.save(user);
+        User savedUser = userDao.save(user);
 
-        Optional<User> found = userDao.findByEmail(email);
-
-        assertTrue(found.isPresent());
+        try {
+            Optional<User> found = userDao.findByEmail(email);
+            assertTrue(found.isPresent());
+        } finally {
+            userDao.delete(savedUser);
+        }
     }
 
     @Test
