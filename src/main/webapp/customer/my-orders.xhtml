@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/layout.xhtml">
+    <ui:define name="title">My Orders</ui:define>
+    <ui:define name="content">
+        <h2>My Orders</h2>
+        <p:dataTable var="ord" value="#{orderBean.myOrders}">
+            <p:column headerText="Product">
+                <h:outputText value="#{ord.product.productName}"/>
+            </p:column>
+            <p:column headerText="Quantity">
+                <h:outputText value="#{ord.quantity}"/>
+            </p:column>
+            <p:column headerText="Total">
+                <h:outputText value="#{ord.total}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
