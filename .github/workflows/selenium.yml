@@ -60,7 +60,7 @@ jobs:
       - name: Run the Selenium suite
         run: >
           mvn -B test
-          -Dtest=RegisterActivateLoginE2E,CategoryCrudE2E,ProductCrudE2E
+          -Dtest=RegisterActivateLoginE2E,CategoryCrudE2E,ProductCrudE2E,CustomerProfileE2E
           -DfailIfNoTests=false
           -Dapp.baseUrl=http://localhost:8080/jsf_tutorial
           -Dmailhog.apiUrl=http://localhost:8025

@@ -271,12 +271,12 @@ Admin-only. Depends on `feature/categories` (`Product.category` is a real foreig
 
 ### Tasks
 
-- [ ] `Customer` entity, `user_id` as a `@ManyToOne` (or `@OneToOne`) foreign key to `User`
-- [ ] `CustomerDao` + implementation
-- [ ] `CustomerService` (interface) + implementation
-- [ ] `CustomerProfileBean` (`@Named @ViewScoped`): loads/creates the profile for `SessionUserHolder`'s current user
-- [ ] `profile.xhtml`
-- [ ] Unit, integration, and e2e tests
+- [x] `Customer` entity, `user_id` as a `@ManyToOne` (or `@OneToOne`) foreign key to `User`
+- [x] `CustomerDao` + implementation
+- [x] `CustomerService` (interface) + implementation
+- [x] `CustomerProfileBean` (`@Named @ViewScoped`): loads/creates the profile for `SessionUserHolder`'s current user
+- [x] `profile.xhtml`
+- [x] Unit, integration, and e2e tests
 
 ## feature/orders
 
