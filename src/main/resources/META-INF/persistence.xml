@@ -22,6 +22,7 @@
         <class>com.edgareldy.jsftutorial.entity.BlacklistedToken</class>
         <class>com.edgareldy.jsftutorial.entity.Category</class>
         <class>com.edgareldy.jsftutorial.entity.Product</class>
+        <class>com.edgareldy.jsftutorial.entity.Customer</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jsf_tutorial_db?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
