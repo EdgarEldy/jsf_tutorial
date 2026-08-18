@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/layout.xhtml">
+    <ui:define name="title">Products</ui:define>
+    <ui:define name="content">
+        <h2>Products</h2>
+        <h:form id="form">
+            <p:toolbar>
+                <p:toolbar-group>
+                    <p:commandButton value="New Product" icon="pi pi-plus"
+                                      actionListener="#{productBean.openNew}"
+                                      update=":form:product-dialog-content"
+                                      oncomplete="PF('productDialog').show()"/>
+                    <p:outputLabel for="categoryFilter" value="Category" style="margin-left:1rem"/>
+                    <p:selectOneMenu id="categoryFilter" value="#{productBean.categoryFilterId}">
+                        <f:selectItem itemLabel="All categories" itemValue="#{null}"/>
+                        <f:selectItems value="#{productBean.categories}" var="cat"
+                                        itemValue="#{cat.id}" itemLabel="#{cat.categoryName}"/>
+                        <p:ajax listener="#{productBean.filterByCategory}" update=":form:products-table"/>
+                    </p:selectOneMenu>
+                </p:toolbar-group>
+            </p:toolbar>
+
+            <p:dataTable id="products-table" var="prod" value="#{productBean.products}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{prod.productName}"/>
+                </p:column>
+                <p:column headerText="Category">
+                    <h:outputText value="#{prod.category.categoryName}"/>
+                </p:column>
+                <p:column headerText="Unit price">
+                    <h:outputText value="#{prod.unitPrice}"/>
+                </p:column>
+                <p:column headerText="Actions" style="width:8rem">
+                    <p:commandButton icon="pi pi-pencil"
+                                      actionListener="#{productBean.edit(prod)}"
+                                      update=":form:product-dialog-content"
+                                      oncomplete="PF('productDialog').show()"/>
+                    <p:commandButton icon="pi pi-trash"
+                                      actionListener="#{productBean.delete(prod)}"
+                                      update=":form:products-table"/>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Product" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade">
+                <h:panelGroup id="product-dialog-content" layout="block">
+                    <p:outputLabel for="productName" value="Name"/>
+                    <p:inputText id="productName" value="#{productBean.product.productName}" required="true"/>
+
+                    <p:outputLabel for="unitPrice" value="Unit price"/>
+                    <p:inputNumber id="unitPrice" value="#{productBean.product.unitPrice}" required="true"/>
+
+                    <p:outputLabel for="productCategory" value="Category"/>
+                    <p:selectOneMenu id="productCategory" value="#{productBean.productCategoryId}" required="true">
+                        <f:selectItems value="#{productBean.categories}" var="cat"
+                                        itemValue="#{cat.id}" itemLabel="#{cat.categoryName}"/>
+                    </p:selectOneMenu>
+
+                    <p:commandButton value="Save"
+                                      action="#{productBean.save}"
+                                      update=":form:products-table"
+                                      oncomplete="if (!args.validationFailed) PF('productDialog').hide()"/>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

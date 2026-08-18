@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/layout.xhtml">
+    <ui:define name="title">Catalog</ui:define>
+    <ui:define name="content">
+        <h2>Catalog</h2>
+        <h:form id="form">
+            <p:outputLabel for="categoryFilter" value="Category"/>
+            <p:selectOneMenu id="categoryFilter" value="#{productBean.categoryFilterId}">
+                <f:selectItem itemLabel="All categories" itemValue="#{null}"/>
+                <f:selectItems value="#{productBean.categories}" var="cat"
+                                itemValue="#{cat.id}" itemLabel="#{cat.categoryName}"/>
+                <p:ajax listener="#{productBean.filterByCategory}" update=":form:catalog-table"/>
+            </p:selectOneMenu>
+
+            <p:dataTable id="catalog-table" var="prod" value="#{productBean.products}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{prod.productName}"/>
+                </p:column>
+                <p:column headerText="Category">
+                    <h:outputText value="#{prod.category.categoryName}"/>
+                </p:column>
+                <p:column headerText="Unit price">
+                    <h:outputText value="#{prod.unitPrice}"/>
+                </p:column>
+                <p:column headerText="">
+                    <h:link outcome="/shop/place-order.xhtml" value="Buy">
+                        <f:param name="productId" value="#{prod.id}"/>
+                    </h:link>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>

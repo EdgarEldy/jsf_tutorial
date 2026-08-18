@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/layout.xhtml">
+    <ui:define name="title">Categories</ui:define>
+    <ui:define name="content">
+        <h2>Categories</h2>
+        <h:form id="form">
+            <p:toolbar>
+                <p:toolbar-group>
+                    <p:commandButton value="New Category" icon="pi pi-plus"
+                                      actionListener="#{categoryBean.openNew}"
+                                      update=":form:category-dialog-content"
+                                      oncomplete="PF('categoryDialog').show()"/>
+                </p:toolbar-group>
+            </p:toolbar>
+
+            <p:dataTable id="categories-table" var="cat" value="#{categoryBean.categories}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{cat.categoryName}"/>
+                </p:column>
+                <p:column headerText="Actions" style="width:8rem">
+                    <p:commandButton icon="pi pi-pencil"
+                                      actionListener="#{categoryBean.edit(cat)}"
+                                      update=":form:category-dialog-content"
+                                      oncomplete="PF('categoryDialog').show()"/>
+                    <p:commandButton icon="pi pi-trash"
+                                      actionListener="#{categoryBean.delete(cat)}"
+                                      update=":form:categories-table"/>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog header="Category" widgetVar="categoryDialog" modal="true" showEffect="fade" hideEffect="fade">
+                <h:panelGroup id="category-dialog-content" layout="block">
+                    <p:outputLabel for="categoryName" value="Name"/>
+                    <p:inputText id="categoryName" value="#{categoryBean.category.categoryName}" required="true"/>
+                    <p:commandButton value="Save"
+                                      action="#{categoryBean.save}"
+                                      update=":form:categories-table"
+                                      oncomplete="if (!args.validationFailed) PF('categoryDialog').hide()"/>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

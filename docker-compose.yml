@@ -1,0 +1,32 @@
+version: "3.8"
+
+# For local development: spins up MySQL for the app to connect to (Tomcat 9
+# itself runs locally, not containerized here — see Dockerfile for a
+# containerized build of the app).
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: jsf_tutorial_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: jsf_tutorial_db
+      MYSQL_USER: jsf_tutorial
+      MYSQL_PASSWORD: jsf_tutorial
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  mysql_data:

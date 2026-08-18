@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <!-- RESOURCE_LOCAL: Tomcat 9 has no JTA transaction manager, unlike
+         GlassFish. Transactions are managed explicitly by BaseDaoImpl via
+         EntityTransaction, and the EntityManager comes from a CDI producer
+         (see config.EntityManagerProducer) instead of @PersistenceContext.
+         Credentials/URL match the mysql service in docker-compose.yml. -->
+    <persistence-unit name="jsf_tutorialPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <!-- Listed explicitly (rather than relying on auto-scan) so this same
+             persistence.xml also works when reused by Arquillian integration
+             tests, where entities live in a ShrinkWrap virtual archive
+             auto-scan can't see. -->
+        <class>com.edgareldy.jsftutorial.entity.User</class>
+        <class>com.edgareldy.jsftutorial.entity.Role</class>
+        <class>com.edgareldy.jsftutorial.entity.Permission</class>
+        <class>com.edgareldy.jsftutorial.entity.ActivationToken</class>
+        <class>com.edgareldy.jsftutorial.entity.PasswordResetToken</class>
+        <class>com.edgareldy.jsftutorial.entity.BlacklistedToken</class>
+        <class>com.edgareldy.jsftutorial.entity.Category</class>
+        <class>com.edgareldy.jsftutorial.entity.Product</class>
+        <class>com.edgareldy.jsftutorial.entity.Customer</class>
+        <class>com.edgareldy.jsftutorial.entity.Order</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jsf_tutorial_db?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
+            <property name="javax.persistence.jdbc.user" value="jsf_tutorial"/>
+            <property name="javax.persistence.jdbc.password" value="jsf_tutorial"/>
+
+            <!-- Schema generation for local development: no DDL scripts in this repo -->
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <property name="eclipselink.logging.level" value="INFO"/>
+        </properties>
+    </persistence-unit>
+</persistence>
