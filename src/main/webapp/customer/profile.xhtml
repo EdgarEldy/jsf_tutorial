@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/layout.xhtml">
+    <ui:define name="title">My Profile</ui:define>
+    <ui:define name="content">
+        <h2>My Profile</h2>
+        <h:form id="form">
+            <p:messages showDetail="true" closable="true"/>
+
+            <p:outputLabel for="firstName" value="First name"/>
+            <p:inputText id="firstName" value="#{customerProfileBean.customer.firstName}" required="true"/>
+
+            <p:outputLabel for="lastName" value="Last name"/>
+            <p:inputText id="lastName" value="#{customerProfileBean.customer.lastName}" required="true"/>
+
+            <p:outputLabel for="telephone" value="Telephone"/>
+            <p:inputText id="telephone" value="#{customerProfileBean.customer.telephone}" required="true"/>
+
+            <p:outputLabel for="email" value="Email"/>
+            <p:inputText id="email" value="#{customerProfileBean.customer.email}" required="true"/>
+
+            <p:outputLabel for="address" value="Address"/>
+            <p:inputTextarea id="address" value="#{customerProfileBean.customer.address}" required="true"/>
+
+            <p:commandButton value="Save" action="#{customerProfileBean.save}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>
