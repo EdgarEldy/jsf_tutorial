@@ -29,6 +29,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product findById(Long id) {
+        return productDao.findById(id);
+    }
+
+    @Override
     public List<Product> findByCategory(Category category) {
         return productDao.findByCategory(category);
     }
