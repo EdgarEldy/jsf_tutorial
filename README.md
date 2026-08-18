@@ -236,11 +236,10 @@ Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict 
 
 - [ ] `Category` entity
 - [ ] `CategoryDao` + implementation
-- [ ] `CategoryService` (interface) + implementation
-- [ ] Business rule: deleting a category that still has products is rejected with a `BusinessRuleException`, surfaced via `FacesMessageUtil.addError` (products don't exist yet on this branch — implement the rule against `CategoryDao`'s product-count lookup, exercised for real once `feature/products` lands)
+- [ ] `CategoryService` (interface) + implementation: plain CRUD only on this branch, no business rule yet, `Product` (and anything to protect a category from) doesn't exist until `feature/products`
 - [ ] `CategoryBean` (`@Named @ViewScoped`, so the PrimeFaces `<p:dataTable>` state survives AJAX postbacks within the page)
 - [ ] `categories.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, `<p:dialog>` for the create/edit form
-- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → attempted delete of a non-empty category (expects the rejection message)
+- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → delete
 
 ## feature/products
 
@@ -255,11 +254,12 @@ Admin-only. Depends on `feature/categories` (`Product.category` is a real foreig
 ### Tasks
 
 - [ ] `Product` entity (`@ManyToOne` to `Category`)
-- [ ] `ProductDao` + implementation (includes a find-by-category query)
+- [ ] `ProductDao` + implementation (includes a find-by-category query and a count-by-category query)
 - [ ] `ProductService` (interface) + implementation
 - [ ] `ProductBean` (`@Named @ViewScoped`)
 - [ ] `products.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, category filter, `<p:dialog>` for the create/edit form
-- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → filter by category
+- [ ] Business rule (now that `Product` exists): `CategoryService.delete` rejects a category that still has products with a `BusinessRuleException`, surfaced via `FacesMessageUtil.addError`, checked via `ProductDao`'s count-by-category query
+- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → filter by category, plus attempted delete of a non-empty category on `admin/categories.xhtml` (expects the rejection message)
 
 ## feature/customers
 
