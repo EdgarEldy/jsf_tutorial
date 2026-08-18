@@ -291,12 +291,12 @@ Admin-only. Depends on `feature/categories` (`Product.category` is a real foreig
 
 ### Tasks
 
-- [ ] `Order` entity
-- [ ] `OrderDao` + implementation
-- [ ] `OrderService` (interface) + implementation: computes `total = quantity * product.unitPrice`, resolves the customer from `SessionUserHolder`
-- [ ] `OrderBean` (`@Named @ViewScoped`), reused across the three order-related pages with different display modes
-- [ ] `place-order.xhtml`, `my-orders.xhtml`, `admin/orders.xhtml`
-- [ ] Unit, integration, and e2e tests, including a full Selenium flow: browse catalog → place an order → see it in "my orders" → see it in the admin order list
+- [x] `Order` entity
+- [x] `OrderDao` + implementation
+- [x] `OrderService` (interface) + implementation: computes `total = quantity * product.unitPrice`, resolves the customer from `SessionUserHolder`
+- [x] `OrderBean` (`@Named @ViewScoped`), reused across the three order-related pages with different display modes
+- [x] `place-order.xhtml`, `my-orders.xhtml`, `admin/orders.xhtml`
+- [x] Unit, integration, and e2e tests, including a full Selenium flow: browse catalog → place an order → see it in "my orders" → see it in the admin order list
 
 ## Order of work
 
