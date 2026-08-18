@@ -1,7 +1,9 @@
 package com.edgareldy.jsftutorial.unit;
 
 import com.edgareldy.jsftutorial.dao.CategoryDao;
+import com.edgareldy.jsftutorial.dao.ProductDao;
 import com.edgareldy.jsftutorial.entity.Category;
+import com.edgareldy.jsftutorial.exception.BusinessRuleException;
 import com.edgareldy.jsftutorial.service.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,13 +15,14 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link CategoryServiceImpl}, with {@link CategoryDao} mocked.
- * Plain pass-through on this branch, no business rule yet since Product
- * doesn't exist until feature/products.
+ * Unit tests for {@link CategoryServiceImpl}, with {@link CategoryDao} and
+ * {@link ProductDao} mocked.
  * <p>
  * Created by Edgar Muhamyangabo on 8/17/26
  * Author : Edgar Muhamyangabo
@@ -31,6 +34,9 @@ class CategoryServiceTest {
 
     @Mock
     private CategoryDao categoryDao;
+
+    @Mock
+    private ProductDao productDao;
 
     @InjectMocks
     private CategoryServiceImpl categoryService;
@@ -60,11 +66,21 @@ class CategoryServiceTest {
     }
 
     @Test
-    void deleteDelegatesToTheDao() {
+    void deleteDelegatesToTheDaoWhenTheCategoryIsEmpty() {
         Category category = new Category();
+        when(productDao.countByCategory(category)).thenReturn(0L);
 
         categoryService.delete(category);
 
         verify(categoryDao).delete(category);
+    }
+
+    @Test
+    void deleteRejectsACategoryThatStillHasProducts() {
+        Category category = new Category();
+        when(productDao.countByCategory(category)).thenReturn(3L);
+
+        assertThrows(BusinessRuleException.class, () -> categoryService.delete(category));
+        verify(categoryDao, never()).delete(category);
     }
 }
