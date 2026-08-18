@@ -234,12 +234,12 @@ Admin-only. Depends on `feature/auth`'s `AuthFilter` being in place to restrict 
 
 ### Tasks
 
-- [ ] `Category` entity
-- [ ] `CategoryDao` + implementation
-- [ ] `CategoryService` (interface) + implementation: plain CRUD only on this branch, no business rule yet, `Product` (and anything to protect a category from) doesn't exist until `feature/products`
-- [ ] `CategoryBean` (`@Named @ViewScoped`, so the PrimeFaces `<p:dataTable>` state survives AJAX postbacks within the page)
-- [ ] `categories.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, `<p:dialog>` for the create/edit form
-- [ ] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → delete
+- [x] `Category` entity
+- [x] `CategoryDao` + implementation
+- [x] `CategoryService` (interface) + implementation: plain CRUD only on this branch, no business rule yet, `Product` (and anything to protect a category from) doesn't exist until `feature/products`
+- [x] `CategoryBean` (`@Named @ViewScoped`, so the PrimeFaces `<p:dataTable>` state survives AJAX postbacks within the page)
+- [x] `categories.xhtml`: PrimeFaces `<p:dataTable>` with inline row actions, `<p:dialog>` for the create/edit form
+- [x] Unit tests, Arquillian integration tests, Selenium e2e test covering create → edit → delete
 
 ## feature/products
 
